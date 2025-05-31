@@ -1,7 +1,19 @@
 import heapq
 from itertools import permutations
 
-# --- Variabel kota (simpul) ---
+print("""Daftar Negara ASEAN:
+1. indonesia
+2. brunei
+3. kamboja
+4. laos
+5. malaysia
+6. myanmar
+7. filipina
+8. singapura
+9. thailand
+10. vietnam""")
+
+# Variabel negara (simpul) 
 ind  = "indonesia"
 brn  = "brunei"
 khm  = "kamboja"
@@ -13,7 +25,7 @@ sgp  = "singapura"
 tha  = "thailand"
 vnm  = "vietnam"
 
-# --- Graph (peta jarak antar kota) ---
+# Graph (peta jarak antar negara) 
 graph = {
     ind: {sgp: 863, brn:1300, mal:1369},
     brn: {ind: 100, sgp:1301, khm:1414, phl:1259},
@@ -27,7 +39,7 @@ graph = {
     vnm: {khm: 421, lao: 837, tha: 730, phl: 1625}
 }
 
-# --- Dijkstra: Rute terpendek ---
+# Dijkstra : Cari jarak terpendek antar negara
 def dijkstra(graph, start, end):
     queue = [(0, start, [])]
     visited = set()
@@ -44,7 +56,7 @@ def dijkstra(graph, start, end):
                 heapq.heappush(queue, (cost + weight, neighbor, path))
     return float("inf"), []
 
-# --- A* Search: Rute cepat dengan heuristik (jarak langsung ke tujuan) ---
+# A* Search: Rute tercepat dengan heuristik 
 heuristic = {
     ind: 1000, brn: 800, khm: 400, lao: 500, mal: 300,
     myan: 600, phl: 700, sgp: 200, tha: 350, vnm: 100
@@ -67,7 +79,7 @@ def astar(graph, start, end):
                 heapq.heappush(queue, (est_cost, cost + weight, neighbor, path))
     return float("inf"), []
 
-# --- TSP : Kunjungi semua kota dan kembali ---
+# TSP : Kunjungi semua kota sekali
 def tsp(graph, start):
     cities = list(graph.keys())
     cities.remove(start)
@@ -89,29 +101,8 @@ def tsp(graph, start):
             best_path = path
     return min_cost, best_path
 
-# --- BST: Menyimpan kota secara terurut ---
-class Node:
-    def __init__(self, key):
-        self.left = None
-        self.right = None
-        self.key = key
 
-def insert(root, key):
-    if root is None:
-        return Node(key)
-    if key < root.key:
-        root.left = insert(root.left, key)
-    else:
-        root.right = insert(root.right, key)
-    return root
-
-def inorder(root):
-    if root:
-        inorder(root.left)
-        print(root.key, end=' ')
-        inorder(root.right)
-
-# --- Input dan Pemanggilan Algoritma ---
+# Input dan Pemanggilan Algoritma
 awal = input("Masukkan kota awal: ").lower()
 akhir = input("Masukkan kota akhir: ").lower()
 
@@ -125,15 +116,7 @@ a_cost, a_route = astar(graph, awal, akhir)
 print(f"Jalur: {' -> '.join(a_route)}")
 print(f"Total jarak: {a_cost} km")
 
-print("\n--- TSP dari kota awal ---")
+print("\n--- TSP ---")
 tsp_cost, tsp_path = tsp(graph, awal)
 print(f"Rute: {' -> '.join(tsp_path)}")
 print(f"Total jarak: {tsp_cost} km")
-
-print("\n--- BST Kota (urut abjad) ---")
-root = None
-for city in graph:
-    root = insert(root, city)
-print("Urutan kota:")
-inorder(root)
-print()
