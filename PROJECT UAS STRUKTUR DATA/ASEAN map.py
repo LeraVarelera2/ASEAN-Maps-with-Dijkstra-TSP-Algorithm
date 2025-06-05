@@ -103,8 +103,8 @@ def tsp(graph, start):
 
 
 # Input dan Pemanggilan Algoritma
-awal = input("Masukkan kota awal: ").lower()
-akhir = input("Masukkan kota akhir: ").lower()
+awal = input("Masukkan negara awal: ").lower()
+akhir = input("Masukkan negara akhir: ").lower()
 
 print("\n--- Dijkstra ---")
 total_cost, route = dijkstra(graph, awal, akhir)
@@ -120,3 +120,5 @@ print("\n--- TSP ---")
 tsp_cost, tsp_path = tsp(graph, awal)
 print(f"Rute: {' -> '.join(tsp_path)}")
 print(f"Total jarak: {tsp_cost} km")
+
+
